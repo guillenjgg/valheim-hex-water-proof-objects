@@ -35,12 +35,20 @@
       <HintPath>..\..\..\bepinex_mod_libs\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="assembly_utils_publicized">
+      <HintPath>..\..\..\publicized_assemblies\assembly_utils_publicized.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="assembly_valheim_publicized">
       <HintPath>..\..\..\publicized_assemblies\assembly_valheim_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\..\..\bepinex_mod_libs\BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Jotunn">
+      <HintPath>..\..\..\..\..\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Hex\BepInEx\plugins\ValheimModding-Jotunn\Jotunn.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -55,16 +63,22 @@
       <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>G:\SteamLibrary\steamapps\common\Valheim\Valheim_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patches\ZnetSceneAwakePatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WaterproofPieceRegistrar.cs" />
+    <Compile Include="Core\WaterproofPieceRegistrar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patches\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

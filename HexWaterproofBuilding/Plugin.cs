@@ -1,19 +1,19 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using HarmonyLib;
+using Jotunn.Managers;
 using System;
 
 namespace HexWaterproofBuilding
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInDependency(Jotunn.Main.ModGuid)]
     public class Plugin : BaseUnityPlugin
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "Waterproof Building";
         private const string PluginVersion = "1.0.0";
 
-        private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
 
         public static Plugin Instance { get; private set; }
@@ -28,8 +28,7 @@ namespace HexWaterproofBuilding
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
 
-            _harmony = new Harmony(PluginGuid);
-            _harmony.PatchAll();
+            PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Log.LogInfo($"{PluginName} v{PluginVersion} loaded.");
         }
@@ -41,8 +40,9 @@ namespace HexWaterproofBuilding
                 _modEnabled.SettingChanged -= OnModEnabledSettingChanged;
             }
 
+            PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
+
             Instance = null;
-            _harmony?.UnpatchSelf();
 
             Log.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
         }
