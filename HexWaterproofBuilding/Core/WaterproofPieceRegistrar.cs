@@ -1,15 +1,17 @@
-﻿using Jotunn.Configs;
+﻿using HexWaterproofBuilding.Discovery;
+using HexWaterproofBuilding.Rules;
+using Jotunn;
+using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HexWaterproofBuilding.Core
 {
     internal static class WaterproofPieceRegistrar
     {
-        private const string WaterproofPrefix = "Hex_Waterproof_";
-        private const string TestPrefabName = "wood_pole_log_4";
-
         private static bool _registered;
 
         public static void RegisterPieces()
@@ -24,7 +26,7 @@ namespace HexWaterproofBuilding.Core
                 return;
             }
 
-            RegisterWaterproofPiece(TestPrefabName);
+            //CreateWaterproofPieces(TestPrefabName);
 
             _registered = true;
             PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
@@ -32,9 +34,9 @@ namespace HexWaterproofBuilding.Core
             Plugin.Log.LogInfo("Waterproof pieces registered.");
         }
 
-        private static void RegisterWaterproofPiece(string vanillaPrefabName)
+        private static void CreateWaterproofPieces(string vanillaPrefabName)
         {
-            string customPrefabName = WaterproofPrefix + vanillaPrefabName;
+            string customPrefabName = WaterproofPrefabRules.PrefabPrefix + vanillaPrefabName;
 
             GameObject customPrefab = PrefabManager.Instance.CreateClonedPrefab(
                 customPrefabName,
@@ -75,6 +77,29 @@ namespace HexWaterproofBuilding.Core
             PieceManager.Instance.AddPiece(customPiece);
 
             Plugin.Log.LogInfo($"Registered waterproof piece: {customPrefabName}");
+        }
+
+        public static void LogWaterproofPrefabCandidates()
+        {
+            Plugin.Log.LogInfo("Available waterproof prefab candidates:");
+
+            int validCount = 0;
+
+            foreach (var prefab in PrefabDiscovery.GetPrefabs(WaterproofPrefabRules.IsValidPrefab))
+            {
+                var wear = prefab.GetComponent<WearNTear>();
+                var piece = prefab.GetComponent<Piece>();
+
+                validCount++;
+
+                Plugin.Log.LogInfo(
+                    $"Valid Prefab: {prefab.name} | Material: {wear.m_materialType} | Category: {piece.m_category}"
+                );
+            }
+
+            Plugin.Log.LogInfo($"Total valid waterproof candidates: {validCount}");
+
+            PrefabManager.OnVanillaPrefabsAvailable -= LogWaterproofPrefabCandidates;
         }
     }
 }

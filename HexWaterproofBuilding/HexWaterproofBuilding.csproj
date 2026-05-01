@@ -48,7 +48,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Jotunn">
-      <HintPath>..\..\..\..\..\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Hex\BepInEx\plugins\ValheimModding-Jotunn\Jotunn.dll</HintPath>
+      <HintPath>..\..\..\bepinex_mod_libs\Jotunn.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,12 +73,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
+    <Compile Include="Rules\WaterproofPrefabRules.cs" />
+    <Compile Include="Discovery\PrefabDiscovery.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Patches\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
