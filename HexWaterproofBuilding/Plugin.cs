@@ -28,7 +28,7 @@ namespace HexWaterproofBuilding
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
 
-            PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.LogWaterproofPrefabCandidates;
+            PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Log.LogInfo($"{PluginName} v{PluginVersion} loaded.");
         }
@@ -40,7 +40,7 @@ namespace HexWaterproofBuilding
                 _modEnabled.SettingChanged -= OnModEnabledSettingChanged;
             }
 
-            PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.LogWaterproofPrefabCandidates;
+            PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Instance = null;
 
