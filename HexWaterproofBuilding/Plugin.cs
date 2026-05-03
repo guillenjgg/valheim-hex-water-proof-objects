@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.Logging;
 using Jotunn.Managers;
 using System;
 
@@ -16,21 +15,19 @@ namespace HexWaterproofBuilding
 
         private ConfigEntry<bool> _modEnabled;
 
-        public static Plugin Instance { get; private set; }
-        public bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
-        internal static ManualLogSource Log { get; private set; }
+        internal static Plugin Instance { get; private set; }
+        internal bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
 
         private void Awake()
         {
             Instance = this;
-            Log = Logger;
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
 
             PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
 
-            Log.LogInfo($"{PluginName} v{PluginVersion} loaded.");
+            Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} loaded.");
         }
 
         private void OnDestroy()
@@ -44,12 +41,12 @@ namespace HexWaterproofBuilding
 
             Instance = null;
 
-            Log.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
+            Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
         }
 
         private void OnModEnabledSettingChanged(object sender, EventArgs args)
         {
-            Log.LogInfo($"Enabled changed to: {IsModEnabled}.");
+            Jotunn.Logger.LogInfo($"Enabled changed to: {IsModEnabled}.");
         }
     }
 }

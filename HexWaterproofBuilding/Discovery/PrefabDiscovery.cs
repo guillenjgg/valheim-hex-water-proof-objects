@@ -7,7 +7,7 @@ namespace HexWaterproofBuilding.Discovery
 {
     internal static class PrefabDiscovery
     {
-        public static IEnumerable<GameObject> GetPrefabs(Func<GameObject, bool> predicate)
+        internal static IEnumerable<GameObject> GetPrefabs(Func<GameObject, bool> predicate)
         {
             var prefabs = PrefabManager.Cache.GetPrefabs(typeof(GameObject));
 

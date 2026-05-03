@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ModConfig.cs" />
+    <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\ItemList.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Rules\WaterproofPrefabRules.cs" />
     <Compile Include="Discovery\PrefabDiscovery.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Patches\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

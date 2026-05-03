@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HexWaterproofBuilding.Core;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace HexWaterproofBuilding.Rules
 {
     internal static class WaterproofPrefabRules
     {
-        internal const string PrefabPrefix = "Hex_Waterproof_";
+        private static readonly string LowerPrefabPrefix = Constants.PrefabPrefix.ToLower();
 
-        private static readonly string LowerPrefabPrefix = PrefabPrefix.ToLower();
         private static readonly string[] InvalidTokens =
         {
             "door",
@@ -39,8 +35,7 @@ namespace HexWaterproofBuilding.Rules
                 return false;
             }
 
-            var prefabName = prefab.name;
-            var lowerName = prefabName.ToLower();
+            var lowerName = prefab.name.ToLowerInvariant();
 
             if (lowerName.StartsWith(LowerPrefabPrefix))
             {
@@ -59,12 +54,8 @@ namespace HexWaterproofBuilding.Rules
                 return false;
             }
 
-            if (wear.m_materialType != WearNTear.MaterialType.Wood && wear.m_materialType != WearNTear.MaterialType.HardWood)
-            {
-                return false;
-            }
-
-            return true;
+            return wear.m_materialType == WearNTear.MaterialType.Wood ||
+                   wear.m_materialType == WearNTear.MaterialType.HardWood;
         }
     }
 }

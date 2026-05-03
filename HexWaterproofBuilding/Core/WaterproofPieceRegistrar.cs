@@ -13,7 +13,7 @@ namespace HexWaterproofBuilding.Core
     {
         private static bool _registered;
 
-        public static void RegisterPieces()
+        internal static void RegisterPieces()
         {
             if (_registered)
             {
@@ -30,7 +30,7 @@ namespace HexWaterproofBuilding.Core
             _registered = true;
             PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
 
-            Plugin.Log.LogInfo($"Waterproof pieces registered. Count: {registeredCount}");
+            Jotunn.Logger.LogInfo($"Waterproof pieces registered. Count: {registeredCount}");
         }
 
         private static int CreateWaterproofPieces()
@@ -59,11 +59,11 @@ namespace HexWaterproofBuilding.Core
 
             if (vanillaPiece == null)
             {
-                Plugin.Log.LogWarning($"{vanillaPrefab.name} has no Piece component. Skipping.");
+                Jotunn.Logger.LogWarning($"{vanillaPrefab.name} has no Piece component. Skipping.");
                 return false;
             }
 
-            string customPrefabName = WaterproofPrefabRules.PrefabPrefix + vanillaPrefab.name;
+            string customPrefabName = $"{Constants.PrefabPrefix}_{vanillaPrefab.name}";
 
             GameObject customPrefab = PrefabManager.Instance.CreateClonedPrefab(
                 customPrefabName,
@@ -72,34 +72,18 @@ namespace HexWaterproofBuilding.Core
 
             if (customPrefab == null)
             {
-                Plugin.Log.LogWarning($"Failed to clone prefab: {vanillaPrefab.name}");
+                Jotunn.Logger.LogWarning($"Failed to clone prefab: {vanillaPrefab.name}");
                 return false;
             }
 
             ApplyModifiersToCustomPrefab(customPrefab);
 
-            var requirements = BuildRequirementConfigs(
-                vanillaPiece,
-                new Dictionary<string, int>
-                {
-                    { ItemList.Resin, 1 }
-                }
-            );
-
-            var config = new PieceConfig
-            {
-                Name = $"Waterproof {vanillaPiece.m_name}",
-                Description = "A waterproof building piece that resists water damage.",
-                PieceTable = PieceTables.Hammer,
-                Category = PieceCategories.Building,
-                Requirements = requirements
-            };
-
+            PieceConfig config = BuildPieceConfig(customPrefabName, vanillaPiece);
             var customPiece = new CustomPiece(customPrefab, true, config);
 
             PieceManager.Instance.AddPiece(customPiece);
 
-            Plugin.Log.LogInfo($"Registered waterproof piece: {customPrefabName}");
+            Jotunn.Logger.LogInfo($"Registered waterproof building piece: {customPrefabName}");
 
             return true;
         }
@@ -115,11 +99,26 @@ namespace HexWaterproofBuilding.Core
 
             if (wear == null)
             {
-                Plugin.Log.LogWarning($"{customPrefab.name} has no WearNTear component.");
+                Jotunn.Logger.LogWarning($"{customPrefab.name} has no WearNTear component.");
                 return;
             }
 
             wear.m_noRoofWear = false;
+        }
+
+        private static PieceConfig BuildPieceConfig(string customPrefabName, Piece vanillaPiece)
+        {
+            return new PieceConfig
+            {
+                Name = customPrefabName,
+                Description = "A waterproof building piece that resists water damage.",
+                PieceTable = PieceTables.Hammer,
+                Category = Constants.WaterproofCategory,
+                Requirements = BuildRequirementConfigs(vanillaPiece, new Dictionary<string, int>
+                {
+                    { ItemList.Resin, 1 }
+                })
+            };
         }
 
         private static RequirementConfig[] BuildRequirementConfigs(Piece vanillaPiece, Dictionary<string, int> customRequirements, bool keepVanillaRequirements = true)
@@ -148,7 +147,8 @@ namespace HexWaterproofBuilding.Core
             {
                 foreach (var customRequirement in customRequirements)
                 {
-                    bool alreadyExists = requirements.Any(requirement => string.Equals(requirement.Item, customRequirement.Key, System.StringComparison.OrdinalIgnoreCase));
+                    bool alreadyExists = requirements.Any(requirement =>
+                        string.Equals(requirement.Item, customRequirement.Key, System.StringComparison.OrdinalIgnoreCase));
 
                     if (alreadyExists)
                     {
