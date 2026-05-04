@@ -10,7 +10,7 @@ namespace HexWaterproofBuilding
     public class Plugin : BaseUnityPlugin
     {
         private const string PluginGuid = "hex.waterproofbuilding";
-        private const string PluginName = "Waterproof Building";
+        private const string PluginName = "WaterproofBuilding";
         private const string PluginVersion = "1.0.0";
 
         private ConfigEntry<bool> _modEnabled;
@@ -25,7 +25,14 @@ namespace HexWaterproofBuilding
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
 
-            PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
+            if (IsModEnabled)
+            {
+                PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
+            }
+            else
+            {
+                Jotunn.Logger.LogInfo("Mod is disabled. No pieces will be registered.");
+            }
 
             Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} loaded.");
         }
@@ -46,7 +53,9 @@ namespace HexWaterproofBuilding
 
         private void OnModEnabledSettingChanged(object sender, EventArgs args)
         {
-            Jotunn.Logger.LogInfo($"Enabled changed to: {IsModEnabled}.");
+            Jotunn.Logger.LogInfo($"Enabled changed to: {IsModEnabled}");
+
+            Jotunn.Logger.LogWarning("Changes require a restart to take effect.");
         }
     }
 }
