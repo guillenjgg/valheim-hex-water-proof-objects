@@ -22,22 +22,41 @@ namespace HexWaterproofBuilding.Core
 
             if (Plugin.Instance == null || !Plugin.Instance.IsModEnabled)
             {
+                PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
                 return;
             }
 
-            int registeredCount = CreateWaterproofPieces();
+            var indexes = PrefabDiscovery.GetHammerPieceIndexes();
+            int registeredCount = CreateWaterproofPieces(indexes);
 
             _registered = true;
+
             PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
 
             Jotunn.Logger.LogInfo($"Waterproof pieces registered. Count: {registeredCount}");
         }
 
-        private static int CreateWaterproofPieces()
+        private static int CreateWaterproofPieces(Dictionary<string, int> hammerIndexes)
         {
             int registeredCount = 0;
 
-            foreach (var prefab in PrefabDiscovery.GetPrefabs(WaterproofPrefabRules.IsValidPrefab))
+            var sortedPrefabs = PrefabDiscovery
+                .GetPrefabs(WaterproofPrefabRules.IsValidPrefab)
+                .OrderBy(prefab =>
+                {
+                    int index;
+
+                    if (hammerIndexes != null && hammerIndexes.TryGetValue(prefab.name, out index))
+                    {
+                        return index;
+                    }
+
+                    return int.MaxValue;
+                })
+                .ThenBy(prefab => prefab.name)
+                .ToList();
+
+            foreach (var prefab in sortedPrefabs)
             {
                 if (CreateWaterproofPiece(prefab))
                 {

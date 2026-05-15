@@ -10,8 +10,8 @@ namespace HexWaterproofBuilding
     public class Plugin : BaseUnityPlugin
     {
         private const string PluginGuid = "hex.waterproofbuilding";
-        private const string PluginName = "WaterproofBuilding";
-        private const string PluginVersion = "1.0.0";
+        private const string PluginName = "HexWaterproofBuilding";
+        private const string PluginVersion = "1.1.0";
 
         private ConfigEntry<bool> _modEnabled;
 
