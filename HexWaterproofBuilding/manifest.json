@@ -1,0 +1,10 @@
+{
+  "name": "HexWaterproofBuilding",
+  "version_number": "1.1.0",
+  "website_url": "https://github.com/guillenjgg/valheim-hex-water-proof-objects",
+  "description": "Adds waterproof versions of vanilla wood-based build pieces to Valheim. Currently tested only in single-player/client-side environments. Multiplayer compatibility has not been fully tested.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2333",
+    "ValheimModding-Jotunn-2.29.0"
+  ]
+}

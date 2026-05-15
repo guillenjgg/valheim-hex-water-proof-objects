@@ -26,5 +26,39 @@ namespace HexWaterproofBuilding.Discovery
                 }
             }
         }
+
+        internal static Dictionary<string, int> GetHammerPieceIndexes()
+        {
+            var indexes = new Dictionary<string, int>();
+            var hammer = PrefabManager.Cache.GetPrefab(typeof(GameObject),"Hammer") as GameObject;
+
+            if(hammer == null)
+            {
+                return indexes;
+            }
+
+            var itemDrop = hammer.GetComponent<ItemDrop>();
+
+            if(itemDrop == null || itemDrop.m_itemData.m_shared.m_buildPieces == null || itemDrop.m_itemData.m_shared.m_buildPieces.m_pieces == null)
+            {
+                return indexes;
+            }
+
+            var pieces = itemDrop.m_itemData.m_shared.m_buildPieces.m_pieces;
+            
+            for (int i = 0; i < pieces.Count; i++)
+            {
+                var prefab = pieces[i];
+
+                if (prefab == null || indexes.ContainsKey(prefab.name))
+                {
+                    continue;
+                }
+                
+                indexes.Add(prefab.name, i);
+            }
+
+            return indexes;
+        }
     }
 }
