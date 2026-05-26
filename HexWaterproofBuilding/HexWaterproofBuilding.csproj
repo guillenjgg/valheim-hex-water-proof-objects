@@ -71,11 +71,16 @@
       <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\ItemList.cs" />
+    <Compile Include="Patches\PatchPlayerUpdatePlacementGhost.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
@@ -93,5 +98,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
