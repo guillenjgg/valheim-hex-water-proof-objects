@@ -44,7 +44,7 @@ namespace HexWaterproofBuilding
 
         private void OnDestroy()
         {
-            Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
+            Logger.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
 
             _harmony?.UnpatchSelf();
             _harmony = null;
@@ -55,9 +55,8 @@ namespace HexWaterproofBuilding
             }
 
             PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
-            
-            Instance = null;
 
+            Instance = null;
         }
 
         private void OnModEnabledSettingChanged(object sender, EventArgs args)
