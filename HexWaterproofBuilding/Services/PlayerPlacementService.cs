@@ -87,6 +87,18 @@ namespace HexWaterproofBuilding.Services
                 .SetValue(Player.PlacementStatus.Valid);
         }
 
+        internal static void SetPlacementGhostValid(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            Traverse.Create(player)
+                .Method("SetPlacementGhostValid", true)
+                .GetValue();
+        }
+
         private static bool ValidateGhost(GameObject placementGhost)
         {
             if (placementGhost == null)

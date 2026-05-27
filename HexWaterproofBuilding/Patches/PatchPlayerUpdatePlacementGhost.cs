@@ -41,6 +41,7 @@ namespace HexWaterproofBuilding.Patches
             if (FoundationSnapService.TrySnapPlacementGhost(placementGhost, aimHit, mask))
             {
                 PlayerPlacementService.SetPlacementValid(__instance);
+                PlayerPlacementService.SetPlacementGhostValid(__instance);
             }
         }
     }
