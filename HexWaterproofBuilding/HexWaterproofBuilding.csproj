@@ -80,13 +80,10 @@
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\ItemList.cs" />
+    <Compile Include="Patches\PatchPlayerPieceRayTest.cs" />
     <Compile Include="Patches\PatchPlayerRemovePiece.cs" />
-    <Compile Include="Patches\PatchPlayerUpdatePlacementGhost.cs" />
     <Compile Include="Patches\PatchPlayerUpdateWearNTearHover.cs" />
-    <Compile Include="Services\FoundationSnapService.cs" />
     <Compile Include="Services\PieceRemovalService.cs" />
-    <Compile Include="Services\PlayerPlacementService.cs" />
-    <Compile Include="Utils\SnapPointUtility.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
