@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using HexWaterproofBuilding.Core;
+using HexWaterproofBuilding.Utils;
 using UnityEngine;
 
 namespace HexWaterproofBuilding.Patches
@@ -7,8 +8,6 @@ namespace HexWaterproofBuilding.Patches
     [HarmonyPatch(typeof(Player), nameof(Player.PieceRayTest))]
     internal static class PatchPlayerPieceRayTest
     {
-        private const float ExtendedPlacementDistance = 50f;
-
         private static bool Prefix(
             Player __instance,
             ref bool __result,
@@ -39,9 +38,7 @@ namespace HexWaterproofBuilding.Patches
                 return true;
             }
 
-            string ghostName = placementGhost.name.Replace("(Clone)", "");
-
-            if (!ghostName.StartsWith($"{Constants.PrefabPrefix}_"))
+            if (!PieceUtility.IsWaterproofPiece(placementGhost.GetComponent<Piece>()))
             {
                 return true;
             }
@@ -63,7 +60,7 @@ namespace HexWaterproofBuilding.Patches
                 cameraTransform.position,
                 cameraTransform.forward,
                 out hit,
-                ExtendedPlacementDistance,
+                Constants.ExtendedPlacementDistance,
                 rayMask))
             {
                 __result = false;

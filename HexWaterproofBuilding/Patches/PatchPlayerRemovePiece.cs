@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using HexWaterproofBuilding.Core;
+using HexWaterproofBuilding.Utils;
 using UnityEngine;
 
 namespace HexWaterproofBuilding.Patches
@@ -48,7 +49,7 @@ namespace HexWaterproofBuilding.Patches
                     Constants.ClosestRangeModifier);
             }
 
-            if (!IsWaterproofPiece(piece))
+            if (!PieceUtility.IsWaterproofPiece(piece))
             {
                 return true;
             }
@@ -162,18 +163,6 @@ namespace HexWaterproofBuilding.Patches
 
             __result = true;
             return false;
-        }
-
-        private static bool IsWaterproofPiece(Piece piece)
-        {
-            if (piece == null)
-            {
-                return false;
-            }
-
-            string pieceName = piece.name.Replace("(Clone)", "");
-
-            return pieceName.StartsWith(Constants.PrefabPrefix + "_");
         }
     }
 }

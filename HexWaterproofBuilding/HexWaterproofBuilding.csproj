@@ -89,6 +89,7 @@
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
     <Compile Include="Rules\WaterproofPrefabRules.cs" />
     <Compile Include="Discovery\PrefabDiscovery.cs" />
+    <Compile Include="Utils\PieceUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CHANGELOG.md">

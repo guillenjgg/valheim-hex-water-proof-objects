@@ -1,13 +1,12 @@
 ﻿using HarmonyLib;
 using HexWaterproofBuilding.Core;
+using HexWaterproofBuilding.Utils;
 using UnityEngine;
 
 namespace HexWaterproofBuilding.Services
 {
     internal static class PieceRemovalService
     {
-        internal const float HoverDistance = 50f;
-
         internal static bool TryApplyLongRangeHover(Player player)
         {
             if (player == null || Plugin.Instance == null || !Plugin.Instance.IsModEnabled)
@@ -50,7 +49,7 @@ namespace HexWaterproofBuilding.Services
                 cameraTransform.position,
                 cameraTransform.forward,
                 out hit,
-                HoverDistance,
+                Constants.HoverDistance,
                 removeRayMask);
 
             if (!hasHit || hit.collider == null)
@@ -60,7 +59,7 @@ namespace HexWaterproofBuilding.Services
 
             Piece piece = hit.collider.GetComponentInParent<Piece>();
 
-            if (!IsWaterproofPiece(piece))
+            if (!PieceUtility.IsWaterproofPiece(piece))
             {
                 return false;
             }
@@ -77,19 +76,6 @@ namespace HexWaterproofBuilding.Services
             }
 
             return true;
-        }
-
-        private static bool IsWaterproofPiece(Piece piece)
-        {
-            if (piece == null)
-            {
-                return false;
-            }
-
-            string pieceName = piece.name?.Replace("(Clone)", "");
-
-            return !string.IsNullOrEmpty(pieceName)
-                && pieceName.StartsWith($"{Constants.PrefabPrefix}_");
         }
     }
 }
