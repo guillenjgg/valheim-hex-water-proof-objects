@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿// PatchPlayerUpdatePlacementGhost.cs
+using HarmonyLib;
 using HexWaterproofBuilding.Services;
 using UnityEngine;
 
