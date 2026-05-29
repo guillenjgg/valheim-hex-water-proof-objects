@@ -29,7 +29,7 @@ namespace HexWaterproofBuilding.Patches
 
             RaycastHit hit;
 
-            if (!Physics.Raycast(origin, direction, out hit, Constants.HoverDistance, mask))
+            if (!Physics.Raycast(origin, direction, out hit, Constants.ExtendedRemoveDistance, mask))
             {
                 return true;
             }

@@ -83,7 +83,6 @@
     <Compile Include="Patches\PatchPlayerPieceRayTest.cs" />
     <Compile Include="Patches\PatchPlayerRemovePiece.cs" />
     <Compile Include="Patches\PatchPlayerUpdateWearNTearHover.cs" />
-    <Compile Include="Services\PieceRemovalService.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
