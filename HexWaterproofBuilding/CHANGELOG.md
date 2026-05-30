@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.1
+
+### Fixed
+
+* Fixed a potential null reference exception issue related to extended-range hover detection
+
 ## v1.2.0
 
 ### Added

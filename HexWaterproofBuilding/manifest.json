@@ -1,6 +1,6 @@
 {
   "name": "HexWaterproofBuilding",
-  "version_number": "1.2.0",
+  "version_number": "1.2.1",
   "website_url": "https://github.com/guillenjgg/valheim-hex-water-proof-objects",
   "description": "Adds waterproof versions of vanilla wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece functionality for waterproof pieces.",
   "dependencies": [

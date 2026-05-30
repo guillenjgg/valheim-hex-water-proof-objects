@@ -12,7 +12,7 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.2.0";
+        private const string PluginVersion = "1.2.1";
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
@@ -27,8 +27,9 @@ namespace HexWaterproofBuilding
             Instance = this;
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
-            _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces");
+            _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces.");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
+            _extendedPlacementRangeEnabled.SettingChanged += OnModEnabledSettingChanged;
 
             _harmony = new Harmony(PluginGuid);
             _harmony.PatchAll();
@@ -57,6 +58,11 @@ namespace HexWaterproofBuilding
                 _modEnabled.SettingChanged -= OnModEnabledSettingChanged;
             }
 
+            if (_extendedPlacementRangeEnabled != null)
+            {
+                _extendedPlacementRangeEnabled.SettingChanged -= OnModEnabledSettingChanged;
+            }
+
             PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Instance = null;
@@ -64,7 +70,8 @@ namespace HexWaterproofBuilding
 
         private void OnModEnabledSettingChanged(object sender, EventArgs args)
         {
-            Jotunn.Logger.LogInfo($"Enabled changed to: {IsModEnabled}");
+            Jotunn.Logger.LogInfo($"Mod enabled: {IsModEnabled}");
+            Jotunn.Logger.LogInfo($"Extended placement range enabled: {IsExtendedPlacementRangeEnabled}");
 
             Jotunn.Logger.LogWarning("Changes require a restart to take effect.");
         }

@@ -15,17 +15,12 @@ namespace HexWaterproofBuilding.Patches
                 return;
             }
 
-            var hoveringPieceField = Traverse.Create(__instance).Field("m_hoveringPiece");
-
             if (!__instance.InPlaceMode())
             {
-                hoveringPieceField.SetValue(null);
                 return;
             }
 
-            hoveringPieceField.SetValue(null);
-
-            if(GameCamera.instance == null || GameCamera.instance.transform == null)
+            if (GameCamera.instance == null || GameCamera.instance.transform == null)
             {
                 return;
             }
@@ -52,11 +47,13 @@ namespace HexWaterproofBuilding.Patches
                 return;
             }
 
-            hoveringPieceField.SetValue(piece);
+            Traverse.Create(__instance)
+                .Field("m_hoveringPiece")
+                .SetValue(piece);
 
             var wearNTear = piece.GetComponent<WearNTear>();
 
-            if(wearNTear == null)
+            if (wearNTear == null)
             {
                 return;
             }
