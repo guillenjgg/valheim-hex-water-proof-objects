@@ -10,7 +10,7 @@ namespace HexWaterproofBuilding.Patches
     {
         private static void Postfix(Player __instance)
         {
-            if (__instance == null || Plugin.Instance == null || !Plugin.Instance.IsModEnabled)
+            if(__instance == null || !FeatureFlags.CanUseExtendedPlacement())
             {
                 return;
             }

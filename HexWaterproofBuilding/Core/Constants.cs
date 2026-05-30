@@ -9,5 +9,6 @@
         internal const float ExtendedHoverDistance = 100f;
         internal const float ExtendedPlacementDistance = 100f;
         internal const float ExtendedRemoveDistance = 100f;
+        internal const float ExtendedCopyDistance = 100f;
     }
 }

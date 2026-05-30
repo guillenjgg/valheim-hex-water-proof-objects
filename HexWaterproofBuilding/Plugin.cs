@@ -16,15 +16,18 @@ namespace HexWaterproofBuilding
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
+        private ConfigEntry<bool> _extendedPlacementRangeEnabled;
 
         internal static Plugin Instance { get; private set; }
         internal bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
+        internal bool IsExtendedPlacementRangeEnabled => _extendedPlacementRangeEnabled != null && _extendedPlacementRangeEnabled.Value;
 
         private void Awake()
         {
             Instance = this;
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
+            _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
 
             _harmony = new Harmony(PluginGuid);

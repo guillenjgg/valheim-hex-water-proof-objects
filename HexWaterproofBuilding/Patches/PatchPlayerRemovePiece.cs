@@ -10,7 +10,7 @@ namespace HexWaterproofBuilding.Patches
     {
         private static bool Prefix(Player __instance, ref bool __result)
         {
-            if (__instance == null || Plugin.Instance == null || !Plugin.Instance.IsModEnabled)
+            if (__instance == null || !FeatureFlags.CanUseExtendedPlacement())
             {
                 return true;
             }

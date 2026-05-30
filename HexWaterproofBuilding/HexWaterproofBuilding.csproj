@@ -77,9 +77,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\ItemList.cs" />
+    <Compile Include="Patches\PatchPlayerCopyPiece.cs" />
     <Compile Include="Patches\PatchPlayerPieceRayTest.cs" />
     <Compile Include="Patches\PatchPlayerRemovePiece.cs" />
     <Compile Include="Patches\PatchPlayerUpdateWearNTearHover.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Rules\WaterproofPrefabRules.cs" />
     <Compile Include="Discovery\PrefabDiscovery.cs" />
     <Compile Include="Utils\PieceUtility.cs" />
+    <Compile Include="Utils\FeatureFlags.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CHANGELOG.md">

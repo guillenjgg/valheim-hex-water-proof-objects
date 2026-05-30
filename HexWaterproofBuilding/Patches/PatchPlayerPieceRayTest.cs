@@ -24,7 +24,7 @@ namespace HexWaterproofBuilding.Patches
             heightmap = null;
             waterSurface = null;
 
-            if (__instance == null || Plugin.Instance == null || !Plugin.Instance.IsModEnabled)
+            if (__instance == null || !FeatureFlags.CanUseExtendedPlacement())
             {
                 return true;
             }
