@@ -71,16 +71,25 @@
       <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\..\..\valheim_mod_libraries\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\ItemList.cs" />
+    <Compile Include="Patches\PatchPlayerCopyPiece.cs" />
+    <Compile Include="Patches\PatchPlayerPieceRayTest.cs" />
+    <Compile Include="Patches\PatchPlayerRemovePiece.cs" />
+    <Compile Include="Patches\PatchPlayerUpdateWearNTearHover.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\WaterproofPieceRegistrar.cs" />
     <Compile Include="Rules\WaterproofPrefabRules.cs" />
     <Compile Include="Discovery\PrefabDiscovery.cs" />
+    <Compile Include="Utils\PieceUtility.cs" />
+    <Compile Include="Utils\FeatureFlags.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CHANGELOG.md">
@@ -93,5 +102,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

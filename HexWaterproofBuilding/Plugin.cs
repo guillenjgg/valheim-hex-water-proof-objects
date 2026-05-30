@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
+using HarmonyLib;
 using Jotunn.Managers;
 using System;
 
@@ -11,19 +12,26 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.1.0";
+        private const string PluginVersion = "1.2.0";
 
+        private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
+        private ConfigEntry<bool> _extendedPlacementRangeEnabled;
 
         internal static Plugin Instance { get; private set; }
         internal bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
+        internal bool IsExtendedPlacementRangeEnabled => _extendedPlacementRangeEnabled != null && _extendedPlacementRangeEnabled.Value;
 
         private void Awake()
         {
             Instance = this;
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
+            _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces");
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
+
+            _harmony = new Harmony(PluginGuid);
+            _harmony.PatchAll();
 
             if (IsModEnabled)
             {
@@ -39,6 +47,11 @@ namespace HexWaterproofBuilding
 
         private void OnDestroy()
         {
+            Logger.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
+
+            _harmony?.UnpatchSelf();
+            _harmony = null;
+
             if (_modEnabled != null)
             {
                 _modEnabled.SettingChanged -= OnModEnabledSettingChanged;
@@ -47,8 +60,6 @@ namespace HexWaterproofBuilding
             PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Instance = null;
-
-            Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} unloaded.");
         }
 
         private void OnModEnabledSettingChanged(object sender, EventArgs args)
