@@ -104,3 +104,12 @@ For multiplayer, installing the mod on both the server and all clients is recomm
 * Safe to add to an existing world
 * Waterproof pieces are separate prefabs and do not replace vanilla pieces
 * Removing the mod may leave placed waterproof pieces unavailable or non-interactable
+
+## Support and Feedback
+Report bugs, request features, or provide feedback:
+
+- Discord: https://discord.gg/wU2FXD94v4
+
+## Source Code
+
+- GitHub: https://github.com/guillenjgg/valheim-hex-water-proof-objects
