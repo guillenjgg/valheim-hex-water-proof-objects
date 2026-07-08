@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.3.0
+
+### Added
+- Added a waterproof workbench.
+- Added a configuration option to enable extended placement for vanilla building pieces.
+- Extended placement now supports the vanilla workbench.
+
+### Improved
+- Minor performance improvements
+
 ## v1.2.2
 
 * Add discord support link

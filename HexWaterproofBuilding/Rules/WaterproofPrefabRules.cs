@@ -49,7 +49,7 @@ namespace HexWaterproofBuilding.Rules
                 return false;
             }
 
-            if (piece.m_category != Piece.PieceCategory.BuildingWorkbench)
+            if (piece.name != "piece_workbench" && piece.m_category != Piece.PieceCategory.BuildingWorkbench)
             {
                 return false;
             }

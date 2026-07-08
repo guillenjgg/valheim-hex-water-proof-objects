@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Jotunn.Managers;
 using System;
+using System.Reflection;
 
 namespace HexWaterproofBuilding
 {
@@ -12,15 +13,17 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.2.2";
+        private const string PluginVersion = "1.3.0";
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
         private ConfigEntry<bool> _extendedPlacementRangeEnabled;
+        private ConfigEntry<bool> _extendedPlacementForVanillaPiecesEnabled;
 
         internal static Plugin Instance { get; private set; }
         internal bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
         internal bool IsExtendedPlacementRangeEnabled => _extendedPlacementRangeEnabled != null && _extendedPlacementRangeEnabled.Value;
+        internal bool IsExtendedPlacementForVanillaPiecesEnabled => _extendedPlacementForVanillaPiecesEnabled != null && _extendedPlacementForVanillaPiecesEnabled.Value;
 
         private void Awake()
         {
@@ -28,19 +31,23 @@ namespace HexWaterproofBuilding
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces.");
+            _extendedPlacementForVanillaPiecesEnabled = Config.Bind(
+                "Extended Placement Range",
+                "VanillaPiecesEnabled",
+                false,
+                "Enable extended placement range for vanilla building pieces."
+            );
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
             _extendedPlacementRangeEnabled.SettingChanged += OnModEnabledSettingChanged;
+            _extendedPlacementForVanillaPiecesEnabled.SettingChanged += OnModEnabledSettingChanged;
 
+            Assembly assembly = Assembly.GetExecutingAssembly();
             _harmony = new Harmony(PluginGuid);
-            _harmony.PatchAll();
+            _harmony.PatchAll(assembly);
 
             if (IsModEnabled)
             {
                 PrefabManager.OnVanillaPrefabsAvailable += Core.WaterproofPieceRegistrar.RegisterPieces;
-            }
-            else
-            {
-                Jotunn.Logger.LogInfo("Mod is disabled. No pieces will be registered.");
             }
 
             Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} loaded.");
@@ -63,6 +70,11 @@ namespace HexWaterproofBuilding
                 _extendedPlacementRangeEnabled.SettingChanged -= OnModEnabledSettingChanged;
             }
 
+            if (_extendedPlacementForVanillaPiecesEnabled != null)
+            {
+                _extendedPlacementForVanillaPiecesEnabled.SettingChanged -= OnModEnabledSettingChanged;
+            }
+
             PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Instance = null;
@@ -72,8 +84,8 @@ namespace HexWaterproofBuilding
         {
             Jotunn.Logger.LogInfo($"Mod enabled: {IsModEnabled}");
             Jotunn.Logger.LogInfo($"Extended placement range enabled: {IsExtendedPlacementRangeEnabled}");
-
-            Jotunn.Logger.LogWarning("Changes require a restart to take effect.");
+            Jotunn.Logger.LogInfo($"Extended placement for vanilla pieces enabled: {IsExtendedPlacementForVanillaPiecesEnabled}");
+            Jotunn.Logger.LogWarning("Changes require a restart to fully take effect.");
         }
     }
 }

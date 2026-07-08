@@ -8,6 +8,18 @@ namespace HexWaterproofBuilding.Patches
     [HarmonyPatch(typeof(Player), nameof(Player.RemovePiece))]
     internal static class PatchPlayerRemovePiece
     {
+        private static readonly AccessTools.FieldRef<Player, int> RemoveRayMaskRef = AccessTools.FieldRefAccess<Player, int>("m_removeRayMask");
+
+        private static readonly AccessTools.FieldRef<Player, EffectList> RemoveEffectsRef = AccessTools.FieldRefAccess<Player, EffectList>("m_removeEffects");
+
+        private static readonly AccessTools.FieldRef<Player, ItemDrop.ItemData> RightItemRef = AccessTools.FieldRefAccess<Player, ItemDrop.ItemData>("m_rightItem");
+
+        private static readonly AccessTools.FieldRef<Character, ZSyncAnimation> ZanimRef = AccessTools.FieldRefAccess<Character, ZSyncAnimation>("m_zanim");
+
+        private static readonly FastInvokeHandler CheckCanRemovePieceRef = MethodInvoker.GetHandler(AccessTools.Method(typeof(Player), "CheckCanRemovePiece"));
+
+        private static readonly FastInvokeHandler FaceLookDirectionRef = MethodInvoker.GetHandler(AccessTools.Method(typeof(Player), "FaceLookDirection"));
+
         private static bool Prefix(Player __instance, ref bool __result)
         {
             if (__instance == null || !FeatureFlags.CanUseExtendedPlacement())
@@ -23,9 +35,7 @@ namespace HexWaterproofBuilding.Patches
             Vector3 origin = GameCamera.instance.transform.position;
             Vector3 direction = GameCamera.instance.transform.forward;
 
-            int mask = Traverse.Create(__instance)
-                .Field("m_removeRayMask")
-                .GetValue<int>();
+            int mask = RemoveRayMaskRef(__instance);
 
             RaycastHit hit;
 
@@ -49,7 +59,7 @@ namespace HexWaterproofBuilding.Patches
                     Constants.ClosestRangeModifier);
             }
 
-            if (!PieceUtility.IsWaterproofPiece(piece))
+            if (!PieceUtility.CanUseExtendedPlacementForPiece(piece))
             {
                 return true;
             }
@@ -78,9 +88,7 @@ namespace HexWaterproofBuilding.Patches
                 return false;
             }
 
-            bool canRemovePiece = Traverse.Create(__instance)
-                .Method("CheckCanRemovePiece", new object[] { piece })
-                .GetValue<bool>();
+            bool canRemovePiece = (bool)CheckCanRemovePieceRef(__instance, piece);
 
             if (!canRemovePiece)
             {
@@ -131,9 +139,7 @@ namespace HexWaterproofBuilding.Patches
                         pieceRotation,
                         pieceTransform);
 
-                    EffectList removeEffects = Traverse.Create(__instance)
-                        .Field("m_removeEffects")
-                        .GetValue<EffectList>();
+                    EffectList removeEffects = RemoveEffectsRef(__instance);
 
                     removeEffects.Create(piecePosition, Quaternion.identity);
 
@@ -141,19 +147,13 @@ namespace HexWaterproofBuilding.Patches
                 }
             }
 
-            var rightItem = Traverse.Create(__instance)
-                .Field("m_rightItem")
-                .GetValue<ItemDrop.ItemData>();
+            var rightItem = RightItemRef(__instance);
 
             if (rightItem != null)
             {
-                Traverse.Create(__instance)
-                    .Method("FaceLookDirection")
-                    .GetValue();
+                FaceLookDirectionRef(__instance);
 
-                var zanim = Traverse.Create(__instance)
-                    .Field("m_zanim")
-                    .GetValue<ZSyncAnimation>();
+                var zanim = ZanimRef(__instance);
 
                 if (zanim != null)
                 {

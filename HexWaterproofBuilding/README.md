@@ -1,15 +1,35 @@
 # HexWaterproofBuilding
 
-Adds waterproof versions of vanilla wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece functionality for waterproof pieces.
+Adds rain-resistant versions of the vanilla workbench, wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece support for waterproof pieces, with optional support for vanilla building pieces.
+
+> ## ⚠️ Important
+> **Extended-range placement for vanilla building pieces is an optional feature and is disabled by default.**
+>
+> To enable it, set `VanillaPiecesEnabled = true` in the configuration file.
 
 ## Features
 
 * Adds a new **Waterproof Building** hammer build tab
+* Adds a waterproof version of the vanilla workbench
 * Clones vanilla wood, darkwood, and ashwood building pieces
 * Waterproof pieces do not take rain damage
 * Uses vanilla build requirements plus **Resin**
 * Supports vanilla placement, snapping, snap cycling, removal, and copy-piece functionality
-* Optional extended-range placement, removal, hover highlighting, and copy-piece support for waterproof pieces
+* Optional extended-range placement, removal, hover highlighting, and copy-piece support
+  * Waterproof pieces (enabled by default)
+  * Vanilla building pieces (optional configuration)
+
+### Screenshots
+
+![Waterproof Pieces](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_1.png)
+
+![Extended Placement](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_2.png)
+
+![Extended Removal](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_3.png)
+
+![Copy Piece](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_4.png)
+
+![Waterproof Workbench](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_5.png)
 
 ---
 
@@ -37,6 +57,11 @@ Enabled = true
 # Setting type: Boolean
 # Default value: true
 Enabled = true
+
+## Enable extended-range placement, removal, hover highlighting, and copy-piece functionality for vanilla building pieces
+# Setting type: Boolean
+# Default value: false
+VanillaPiecesEnabled = false
 ```
 
 ⚠️ Changes to configuration settings require a full game restart.
@@ -92,8 +117,8 @@ For multiplayer, installing the mod on both the server and all clients is recomm
 * Uses Jotunn for prefab and piece registration
 * Harmony patching
 * Waterproof variants are separate prefabs and do not modify vanilla assets directly
-* Extended-range functionality only applies to waterproof pieces
-* Vanilla pieces retain normal placement and interaction distances
+* Extended-range functionality is supported for waterproof pieces.
+* Vanilla building pieces can optionally use extended-range functionality through configuration.
 
 ---
 

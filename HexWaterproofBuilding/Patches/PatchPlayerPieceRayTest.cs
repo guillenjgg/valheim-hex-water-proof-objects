@@ -8,6 +8,14 @@ namespace HexWaterproofBuilding.Patches
     [HarmonyPatch(typeof(Player), nameof(Player.PieceRayTest))]
     internal static class PatchPlayerPieceRayTest
     {
+        private static readonly AccessTools.FieldRef<Player, GameObject> PlacementGhostRef = AccessTools.FieldRefAccess<Player, GameObject>("m_placementGhost");
+
+        private static readonly AccessTools.FieldRef<Player, int> PlaceRayMaskRef = AccessTools.FieldRefAccess<Player, int>("m_placeRayMask");
+
+        private static readonly AccessTools.FieldRef<Player, int> PlaceWaterRayMaskRef = AccessTools.FieldRefAccess<Player, int>("m_placeWaterRayMask");
+
+        private static readonly int WaterLayer = LayerMask.NameToLayer("Water");
+
         private static bool Prefix(
             Player __instance,
             ref bool __result,
@@ -29,23 +37,21 @@ namespace HexWaterproofBuilding.Patches
                 return true;
             }
 
-            GameObject placementGhost = Traverse.Create(__instance)
-                .Field("m_placementGhost")
-                .GetValue<GameObject>();
+            GameObject placementGhost = PlacementGhostRef(__instance);
 
             if (placementGhost == null)
             {
                 return true;
             }
 
-            if (!PieceUtility.IsWaterproofPiece(placementGhost.GetComponent<Piece>()))
+            Piece ghostPiece = placementGhost.GetComponent<Piece>();
+
+            if (!PieceUtility.CanUseExtendedPlacementForPiece(ghostPiece))
             {
                 return true;
             }
 
-            int rayMask = water
-                ? Traverse.Create(__instance).Field("m_placeWaterRayMask").GetValue<int>()
-                : Traverse.Create(__instance).Field("m_placeRayMask").GetValue<int>();
+            int rayMask = water ? PlaceWaterRayMaskRef(__instance) : PlaceRayMaskRef(__instance);
 
             if (GameCamera.instance == null)
             {
@@ -78,9 +84,7 @@ namespace HexWaterproofBuilding.Patches
             piece = hit.collider.GetComponentInParent<Piece>();
             heightmap = hit.collider.GetComponent<Heightmap>();
 
-            waterSurface = hit.collider.gameObject.layer == LayerMask.NameToLayer("Water")
-                ? hit.collider
-                : null;
+            waterSurface = WaterLayer >= 0 && hit.collider.gameObject.layer == WaterLayer ? hit.collider : null;
 
             __result = true;
             return false;
