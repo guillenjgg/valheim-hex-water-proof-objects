@@ -8,5 +8,11 @@
                 && Plugin.Instance.IsModEnabled 
                 && Plugin.Instance.IsExtendedPlacementRangeEnabled;
         }
+
+        internal static bool CanUseExtendedPlacementForVanillaPieces()
+        {
+            return CanUseExtendedPlacement()
+                && Plugin.Instance.IsExtendedPlacementForVanillaPiecesEnabled;
+        }
     }
 }

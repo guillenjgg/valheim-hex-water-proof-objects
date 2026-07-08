@@ -8,6 +8,9 @@ namespace HexWaterproofBuilding.Patches
     [HarmonyPatch(typeof(Player), nameof(Player.UpdateWearNTearHover))]
     internal static class PatchPlayerUpdateWearNTearHover
     {
+        private static readonly AccessTools.FieldRef<Player, int> RemoveRayMaskRef = AccessTools.FieldRefAccess<Player, int>("m_removeRayMask");
+        private static readonly AccessTools.FieldRef<Player, Piece> HoveringPieceRef = AccessTools.FieldRefAccess<Player, Piece>("m_hoveringPiece");
+
         private static void Postfix(Player __instance)
         {
             if(__instance == null || !FeatureFlags.CanUseExtendedPlacement())
@@ -29,9 +32,7 @@ namespace HexWaterproofBuilding.Patches
             var origin = GameCamera.instance.transform.position;
             var direction = GameCamera.instance.transform.forward;
             
-            var mask = Traverse.Create(__instance)
-                .Field("m_removeRayMask")
-                .GetValue<int>();
+            var mask = RemoveRayMaskRef(__instance);
 
             var hasHit = Physics.Raycast(origin, direction, out hit, Constants.ExtendedHoverDistance, mask);
 
@@ -42,14 +43,12 @@ namespace HexWaterproofBuilding.Patches
 
             Piece piece = hit.collider.GetComponentInParent<Piece>();
 
-            if (!PieceUtility.IsWaterproofPiece(piece))
+            if (!PieceUtility.CanUseExtendedPlacementForPiece(piece))
             {
                 return;
             }
 
-            Traverse.Create(__instance)
-                .Field("m_hoveringPiece")
-                .SetValue(piece);
+            HoveringPieceRef(__instance) = piece;
 
             var wearNTear = piece.GetComponent<WearNTear>();
 
