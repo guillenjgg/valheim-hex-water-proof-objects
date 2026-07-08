@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Jotunn.Managers;
 using System;
+using System.Reflection;
 
 namespace HexWaterproofBuilding
 {
@@ -12,7 +13,7 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.2.2";
+        private const string PluginVersion = "1.2.3";
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
@@ -31,8 +32,9 @@ namespace HexWaterproofBuilding
             _modEnabled.SettingChanged += OnModEnabledSettingChanged;
             _extendedPlacementRangeEnabled.SettingChanged += OnModEnabledSettingChanged;
 
+            Assembly asembly = Assembly.GetExecutingAssembly();
             _harmony = new Harmony(PluginGuid);
-            _harmony.PatchAll();
+            _harmony.PatchAll(asembly);
 
             if (IsModEnabled)
             {
