@@ -13,7 +13,7 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.3.0";
+        private const string PluginVersion = "1.3.1";
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;

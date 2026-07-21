@@ -10,9 +10,7 @@ namespace HexWaterproofBuilding.Rules
 
         private static readonly string[] InvalidTokens =
         {
-            "door",
             "stack",
-            "gate",
             "spiral",
             "treasure",
             "dvergr",

@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.1
+
+### Added
+- Wood doors and gates
+
 ## v1.3.0
 
 ### Added
