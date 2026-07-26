@@ -1,16 +1,20 @@
 # HexWaterproofBuilding
 
-Adds rain-resistant versions of the vanilla workbench, wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece support for waterproof pieces, with optional support for vanilla building pieces.
+* Adds rain-resistant versions of the vanilla workbench, wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece support for waterproof pieces, with optional support for vanilla building pieces.
+* Removes roof requirement for the vanilla and rain resistant workbench.
 
 > ## ⚠️ Important
 > **Extended-range placement for vanilla building pieces is an optional feature and is disabled by default.**
 >
 > To enable it, set `VanillaPiecesEnabled = true` in the configuration file.
+>
+> Changes to configuration settings require a full game restart.
 
 ## Features
 
 * Adds a new **Waterproof Building** hammer build tab
 * Adds a waterproof version of the vanilla workbench
+* Removes roof requirement for the vanilla and rain resistant workbench.
 * Clones vanilla wood, darkwood, and ashwood building pieces
 * Waterproof pieces do not take rain damage
 * Uses vanilla build requirements plus **Resin**
@@ -62,6 +66,11 @@ Enabled = true
 # Setting type: Boolean
 # Default value: false
 VanillaPiecesEnabled = false
+
+## Require a roof for vanilla and waterproof workbenches
+# Setting type: Boolean
+# Default value: false
+WorkBenchRequireRoof = false
 ```
 
 ⚠️ Changes to configuration settings require a full game restart.
@@ -115,7 +124,7 @@ For multiplayer, installing the mod on both the server and all clients is recomm
 ## Compatibility
 
 * Uses Jotunn for prefab and piece registration
-* Harmony patching
+* Uses Harmony to extend placement and workbench behavior
 * Waterproof variants are separate prefabs and do not modify vanilla assets directly
 * Extended-range functionality is supported for waterproof pieces.
 * Vanilla building pieces can optionally use extended-range functionality through configuration.
@@ -124,9 +133,6 @@ For multiplayer, installing the mod on both the server and all clients is recomm
 
 ## Notes
 
-* Only buildable pieces are affected
-* Existing vanilla pieces are unchanged
-* Safe to add to an existing world
 * Waterproof pieces are separate prefabs and do not replace vanilla pieces
 * Removing the mod may leave placed waterproof pieces unavailable or non-interactable
 

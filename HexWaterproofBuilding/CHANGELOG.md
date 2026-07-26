@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.0
+
+### Added
+- Remove roof requirement for vanilla and waterproof workbench.
+
 ## v1.3.1
 
 ### Added
