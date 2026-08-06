@@ -2,7 +2,7 @@
   "name": "HexWaterproofBuilding",
   "version_number": "1.4.0",
   "website_url": "https://discord.gg/wU2FXD94v4",
-  "description": "Adds rain resistant versions of vanilla crafting workbench, wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece functionality for waterproof pieces.",
+  "description": "Adds rain-resistant versions of the vanilla workbench and building pieces. Includes a vertical pier support that extends to the seabed, optional extended-range placement for vanilla and waterproof pieces, and removes the workbench roof requirement.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2333",
     "ValheimModding-Jotunn-2.29.1"

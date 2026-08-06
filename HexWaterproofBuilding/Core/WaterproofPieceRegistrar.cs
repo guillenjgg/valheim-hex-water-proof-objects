@@ -3,6 +3,7 @@ using HexWaterproofBuilding.Rules;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,12 +29,57 @@ namespace HexWaterproofBuilding.Core
 
             var indexes = PrefabDiscovery.GetHammerPieceIndexes();
             int registeredCount = CreateWaterproofPieces(indexes);
+            int createPierPieces = CreatePierPieces();
 
             _registered = true;
 
             PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
 
             Jotunn.Logger.LogInfo($"Waterproof pieces registered. Count: {registeredCount}");
+        }
+
+        private static int CreatePierPieces()
+        {
+            if (Plugin.Instance == null)
+            {
+                return 0;
+            }
+
+            GameObject log4 = Plugin.Instance.PierLog4Asset;
+
+            if (log4 == null)
+            {
+                return 0;
+            }
+
+            if (log4.GetComponent<Components.PierComponent>() == null)
+            {
+                log4.AddComponent<Components.PierComponent>();
+            }
+
+            PieceManager.Instance.AddPieceCategory(Constants.PierCategory);
+
+            var config = new PieceConfig
+            {
+                Name = "$piece_hex_pier_log_4_vertical",
+                Description = "$piece_hex_pier_log_4_vertical_desc",
+                PieceTable = PieceTables.Hammer,
+                CraftingStation = null,
+                Category = Constants.PierCategory,
+                Requirements = new[]
+                {
+                    new RequirementConfig(ItemList.RoundLog, 2, 0, true),
+                    new RequirementConfig(ItemList.Resin, 1, 0, true)
+                }
+            };
+
+            var customPiece = new CustomPiece(log4, true, config);
+
+            PieceManager.Instance.AddPiece(customPiece);
+
+            Jotunn.Logger.LogInfo($"Registered pier piece: {log4.name}");
+
+            return 1;
         }
 
         private static int CreateWaterproofPieces(Dictionary<string, int> hammerIndexes)
@@ -82,7 +128,7 @@ namespace HexWaterproofBuilding.Core
                 return false;
             }
 
-            string customPrefabName = $"{Constants.PrefabPrefix}_{vanillaPrefab.name}";
+            string customPrefabName = $"{Constants.WaterProofPrefabPrefix}_{vanillaPrefab.name}";
 
             GameObject customPrefab = PrefabManager.Instance.CreateClonedPrefab(
                 customPrefabName,

@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Constants.cs" />
+    <Compile Include="Components\PierComponent.cs" />
     <Compile Include="Core\ItemList.cs" />
     <Compile Include="Patches\PatchCraftingStation.cs" />
     <Compile Include="Patches\PatchPlayerCopyPiece.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Utils\FeatureFlags.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\AssetBundles\piersupport" />
     <None Include="CHANGELOG.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
