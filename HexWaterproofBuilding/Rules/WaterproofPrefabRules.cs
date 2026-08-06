@@ -6,7 +6,8 @@ namespace HexWaterproofBuilding.Rules
 {
     internal static class WaterproofPrefabRules
     {
-        private static readonly string LowerPrefabPrefix = Constants.PrefabPrefix.ToLower();
+        private static readonly string LowerWaterproofPrefabPrefix = Constants.WaterProofPrefabPrefix.ToLowerInvariant();
+        private static readonly string LowerPierPrefabPrefix = Constants.PierPrefabPrefix.ToLowerInvariant();
 
         private static readonly string[] InvalidTokens =
         {
@@ -35,7 +36,7 @@ namespace HexWaterproofBuilding.Rules
 
             var lowerName = prefab.name.ToLowerInvariant();
 
-            if (lowerName.StartsWith(LowerPrefabPrefix))
+            if (lowerName.StartsWith(LowerWaterproofPrefabPrefix) || lowerName.StartsWith(LowerPierPrefabPrefix))
             {
                 return false;
             }

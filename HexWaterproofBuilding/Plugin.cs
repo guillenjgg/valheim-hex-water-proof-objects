@@ -2,7 +2,9 @@
 using BepInEx.Configuration;
 using HarmonyLib;
 using Jotunn.Managers;
+using Jotunn.Utils;
 using System.Reflection;
+using UnityEngine;
 
 namespace HexWaterproofBuilding
 {
@@ -25,10 +27,14 @@ namespace HexWaterproofBuilding
         internal bool IsExtendedPlacementRangeEnabled => _extendedPlacementRangeEnabled != null && _extendedPlacementRangeEnabled.Value;
         internal bool IsExtendedPlacementForVanillaPiecesEnabled => _extendedPlacementForVanillaPiecesEnabled != null && _extendedPlacementForVanillaPiecesEnabled.Value;
         internal bool IsWorkBenchRequireRoof => _workBenchRequireRoof != null && _workBenchRequireRoof.Value;
+        internal AssetBundle AssetBundle { get; private set; }
+        internal GameObject PierLog4Asset { get; private set; }
 
         private void Awake()
         {
             Instance = this;
+            
+            LoadAssets();
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces.");
@@ -63,6 +69,20 @@ namespace HexWaterproofBuilding
             PrefabManager.OnVanillaPrefabsAvailable -= Core.WaterproofPieceRegistrar.RegisterPieces;
 
             Instance = null;
+        }
+
+        private bool LoadAssets()
+        {
+            AssetBundle = AssetUtils.LoadAssetBundleFromResources("piersupport", Assembly.GetExecutingAssembly());
+
+            if(AssetBundle == null)
+            {
+                return false;
+            }
+
+            PierLog4Asset = AssetBundle.LoadAsset<GameObject>("hex_pier_log_4_vertical");
+
+            return PierLog4Asset != null;
         }
     }
 }

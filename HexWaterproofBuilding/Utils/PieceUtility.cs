@@ -13,7 +13,7 @@ namespace HexWaterproofBuilding.Utils
 
             string pieceName = piece.name.Replace("(Clone)", "");
 
-            return pieceName.StartsWith(Constants.PrefabPrefix + "_");
+            return pieceName.StartsWith(Constants.WaterProofPrefabPrefix + "_");
         }
 
         internal static bool CanUseExtendedPlacementForPiece(Piece piece)
@@ -45,7 +45,7 @@ namespace HexWaterproofBuilding.Utils
 
             string pieceName = piece.name.Replace("(Clone)", "");
 
-            if (pieceName.StartsWith(Constants.PrefabPrefix + "_"))
+            if (pieceName.StartsWith(Constants.WaterProofPrefabPrefix + "_"))
             {
                 return false;
             }
