@@ -1,8 +1,10 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
+using Jotunn.Entities;
 using Jotunn.Managers;
 using Jotunn.Utils;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,6 +23,7 @@ namespace HexWaterproofBuilding
         private ConfigEntry<bool> _extendedPlacementRangeEnabled;
         private ConfigEntry<bool> _extendedPlacementForVanillaPiecesEnabled;
         private ConfigEntry<bool> _workBenchRequireRoof;
+        private CustomLocalization _localization;
 
         internal static Plugin Instance { get; private set; }
         internal bool IsModEnabled => _modEnabled != null && _modEnabled.Value;
@@ -35,6 +38,7 @@ namespace HexWaterproofBuilding
             Instance = this;
             
             LoadAssets();
+            AddLocalizations();
 
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable or disable the Waterproof Building mod.");
             _extendedPlacementRangeEnabled = Config.Bind("Extended Placement Range", "Enabled", true, "Enable extended placement range for waterproof pieces.");
@@ -83,6 +87,17 @@ namespace HexWaterproofBuilding
             PierLog4Asset = AssetBundle.LoadAsset<GameObject>("hex_pier_log_4_vertical");
 
             return PierLog4Asset != null;
+        }
+
+        private void AddLocalizations()
+        {
+            _localization = LocalizationManager.Instance.GetLocalization();
+
+            _localization.AddTranslation("English", new Dictionary<string, string>
+            {
+                {"piece_hex_pier_log_4_vertical", "4m Vertical Pier Support" },
+                {"piece_hex_pier_log_4_vertical_desc", "A pier support that extends to the seabed. Cannot be placed on dry land." },
+            });
         }
     }
 }

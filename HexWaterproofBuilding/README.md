@@ -1,10 +1,13 @@
 # HexWaterproofBuilding
 
-* Adds rain-resistant versions of the vanilla workbench, wood, darkwood, and ashwood build pieces to Valheim. Includes optional extended-range placement, removal, hover highlighting, and copy-piece support for waterproof pieces, with optional support for vanilla building pieces.
-* Removes roof requirement for the vanilla and rain resistant workbench.
+- Adds rain-resistant versions of the vanilla workbench, wood, darkwood, and ashwood build pieces to Valheim.
+- Adds a **4m Vertical Pier Support** that automatically extends to the seabed and cannot be placed on dry land.
+- Includes optional extended-range placement, removal, hover highlighting, and copy-piece support for both waterproof and vanilla building pieces.
+- Removes the roof requirement for the vanilla and waterproof workbench.
 
 > ## ⚠️ Important
-> **Extended-range placement for vanilla building pieces is an optional feature and is disabled by default.**
+>
+> **Extended-range placement for vanilla building pieces is optional and disabled by default.**
 >
 > To enable it, set `VanillaPiecesEnabled = true` in the configuration file.
 >
@@ -12,16 +15,19 @@
 
 ## Features
 
-* Adds a new **Waterproof Building** hammer build tab
-* Adds a waterproof version of the vanilla workbench
-* Removes roof requirement for the vanilla and rain resistant workbench.
-* Clones vanilla wood, darkwood, and ashwood building pieces
-* Waterproof pieces do not take rain damage
-* Uses vanilla build requirements plus **Resin**
-* Supports vanilla placement, snapping, snap cycling, removal, and copy-piece functionality
-* Optional extended-range placement, removal, hover highlighting, and copy-piece support
-  * Waterproof pieces (enabled by default)
-  * Vanilla building pieces (optional configuration)
+- Adds a new **Waterproof Building** hammer build tab
+- Adds a new **Pier** hammer build tab
+- Adds a waterproof version of the vanilla workbench
+- Removes the roof requirement for the vanilla and waterproof workbench
+- Clones vanilla wood, darkwood, and ashwood building pieces
+- Waterproof pieces do not take rain damage
+- Adds a **4m Vertical Pier Support** that automatically extends to the seabed
+- Pier supports cannot be placed on dry land
+- Uses vanilla build requirements plus **Resin** for waterproof pieces
+- Supports vanilla placement, snapping, snap cycling, removal, and copy-piece functionality
+- Optional extended-range placement, removal, hover highlighting, and copy-piece support
+  - Waterproof building pieces (enabled by default)
+  - Vanilla building pieces (optional configuration)
 
 ### Screenshots
 
@@ -34,6 +40,8 @@
 ![Copy Piece](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_4.png)
 
 ![Waterproof Workbench](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_5.png)
+
+![Pier Support](https://raw.githubusercontent.com/guillenjgg/valheim-hex-mod-images/main/hexwaterproofbuilding/hexwaterproof_6.png)
 
 ---
 
@@ -73,16 +81,16 @@ VanillaPiecesEnabled = false
 WorkBenchRequireRoof = false
 ```
 
-⚠️ Changes to configuration settings require a full game restart.
-
-Waterproof pieces are registered during game initialization and cannot be safely removed at runtime.
+> ⚠️ Changes to configuration settings require a full game restart.
+>
+> Waterproof pieces and pier supports are registered during game initialization and cannot be safely added or removed at runtime.
 
 ---
 
 ## Requirements
 
-* BepInExPack Valheim
-* Jotunn
+- BepInExPack Valheim
+- Jotunn
 
 ---
 
@@ -113,30 +121,33 @@ BepInEx/plugins/HexWaterproofBuilding/HexWaterproofBuilding.dll
 
 ## Multiplayer
 
-This mod has been tested in single-player.
+This mod has not been extensively tested in multiplayer, or on a dedicate server.
 
-The waterproof pieces themselves should synchronize normally because they are registered through Jotunn and use standard Valheim building systems.
+Install this mod on the server and all clients.
 
-For multiplayer, installing the mod on both the server and all clients is recommended.
+Custom waterproof pieces and pier supports are synchronized through Jotunn and use Valheim's standard building systems.
 
 ---
 
 ## Compatibility
 
-* Uses Jotunn for prefab and piece registration
-* Uses Harmony to extend placement and workbench behavior
-* Waterproof variants are separate prefabs and do not modify vanilla assets directly
-* Extended-range functionality is supported for waterproof pieces.
-* Vanilla building pieces can optionally use extended-range functionality through configuration.
+- Uses Jotunn for prefab and piece registration
+- Uses Harmony to extend placement and workbench behavior
+- Waterproof pieces are separate prefabs and do not modify vanilla building pieces
+- Pier supports are custom building pieces that automatically extend to the seabed
+- Extended-range functionality is available for waterproof pieces by default
+- Vanilla building pieces can optionally use extended-range functionality through configuration
 
 ---
 
 ## Notes
 
-* Waterproof pieces are separate prefabs and do not replace vanilla pieces
-* Removing the mod may leave placed waterproof pieces unavailable or non-interactable
+- Waterproof pieces are separate prefabs and do not replace vanilla building pieces
+- Pier supports automatically generate additional support sections based on water depth
+- Removing the mod may leave placed waterproof pieces and pier supports unavailable or non-interactable
 
 ## Support and Feedback
+
 Report bugs, request features, or provide feedback:
 
 - Discord: https://discord.gg/wU2FXD94v4

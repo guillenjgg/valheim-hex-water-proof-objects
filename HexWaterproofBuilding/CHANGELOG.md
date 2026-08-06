@@ -3,6 +3,10 @@
 ## v1.4.0
 
 ### Added
+- New **Pier** build category.
+- **4m Vertical Pier Support** that automatically extends to the seabed.
+
+### Added
 - Remove roof requirement for vanilla and waterproof workbench.
 
 ## v1.3.1
