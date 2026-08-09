@@ -80,6 +80,8 @@
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Components\PierComponent.cs" />
     <Compile Include="Core\ItemList.cs" />
+    <Compile Include="Core\PierDefinitionRegistry.cs" />
+    <Compile Include="Models\PierDefinition.cs" />
     <Compile Include="Patches\PatchCraftingStation.cs" />
     <Compile Include="Patches\PatchPlayerCopyPiece.cs" />
     <Compile Include="Patches\PatchPlayerPieceRayTest.cs" />

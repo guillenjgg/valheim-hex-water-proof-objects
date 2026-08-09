@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using HexWaterproofBuilding.Core;
+using HexWaterproofBuilding.Models;
+using UnityEngine;
 
 namespace HexWaterproofBuilding.Components
 {
@@ -6,12 +8,9 @@ namespace HexWaterproofBuilding.Components
     {
         private const float MaxRaycastDistance = 100f;
         private const float GhostUpdateInterval = 0.1f;
-        private const float SegmentLength = 4f;
-        private const float SupportChainVerticalOffset = -4.0f;
-        private const float InteractionColliderWidth = 0.6f;
-        private const string VisualObjectName = "New";
         private const string GeneratedSupportsName = "GeneratedSupports";
         private const string InteractionColliderName = "PierInteractionCollider";
+        private const string CloneSuffix = "(Clone)";
 
         private bool _isPlacementGhost;
         private bool? _lastGhostValidation;
@@ -20,6 +19,7 @@ namespace HexWaterproofBuilding.Components
         private WearNTear _wear;
         private Transform _visual;
         private Vector3 _originalVisualLocalPosition;
+        private PierDefinition _definition;
 
         private void Awake()
         {
@@ -27,18 +27,43 @@ namespace HexWaterproofBuilding.Components
             _terrainMask = LayerMask.GetMask("terrain");
             _nview = GetComponent<ZNetView>();
             _wear = GetComponent<WearNTear>();
-            _visual = transform.Find(VisualObjectName);
 
-            if (_visual != null)
+            string prefabName = GetPrefabName(gameObject);
+            _definition = PierDefinitionRegistry.Get(prefabName);
+
+            if (_definition == null)
             {
-                _originalVisualLocalPosition = _visual.localPosition;
+                Jotunn.Logger.LogWarning($"No pier definition found for {prefabName}.");
+                return;
             }
+
+            if (_wear == null)
+            {
+                Jotunn.Logger.LogWarning($"{prefabName} has no WearNTear component.");
+                return;
+            }
+
+            _wear.m_noSupportWear = false;
+
+            if (_wear.m_new == null)
+            {
+                Jotunn.Logger.LogWarning($"{prefabName} has no WearNTear new visual.");
+                return;
+            }
+
+            _visual = _wear.m_new.transform;
+            _originalVisualLocalPosition = _visual.localPosition;
 
             ApplyVisualOffset();
         }
 
         private void Start()
         {
+            if (_definition == null || _wear == null || _visual == null)
+            {
+                return;
+            }
+
             if (_isPlacementGhost)
             {
                 InvokeRepeating(nameof(UpdatePlacementGhost), 0f, GhostUpdateInterval);
@@ -55,12 +80,7 @@ namespace HexWaterproofBuilding.Components
 
         private void ApplyVisualOffset()
         {
-            if (_wear == null)
-            {
-                return;
-            }
-
-            Vector3 offset = Vector3.up * SupportChainVerticalOffset;
+            Vector3 offset = Vector3.up * _definition.VerticalOffset;
 
             ApplyOffsetToVisual(_wear.m_new, offset);
 
@@ -107,7 +127,7 @@ namespace HexWaterproofBuilding.Components
                 return;
             }
 
-            int segmentCount = Mathf.CeilToInt(hit.distance / SegmentLength);
+            int segmentCount = Mathf.CeilToInt(hit.distance / _definition.SegmentLength);
             int additionalSegments = Mathf.Max(0, segmentCount - 1);
 
             BuildSupports(additionalSegments);
@@ -138,7 +158,7 @@ namespace HexWaterproofBuilding.Components
 
             Vector3 shiftedVisualPosition =
                 _originalVisualLocalPosition +
-                Vector3.up * SupportChainVerticalOffset;
+                Vector3.up * _definition.VerticalOffset;
 
             for (int i = 1; i <= additionalSegments; i++)
             {
@@ -147,7 +167,7 @@ namespace HexWaterproofBuilding.Components
                 segment.name = $"Segment_{i}";
                 segment.transform.localPosition =
                     shiftedVisualPosition +
-                    Vector3.down * SegmentLength * i;
+                    Vector3.down * _definition.SegmentLength * i;
 
                 segment.transform.localRotation = _visual.localRotation;
                 segment.transform.localScale = _visual.localScale;
@@ -186,15 +206,14 @@ namespace HexWaterproofBuilding.Components
             interactionObject.transform.localRotation = Quaternion.identity;
             interactionObject.transform.localScale = Vector3.one;
 
-            float totalHeight = SegmentLength * segmentCount;
-            float topY = SupportChainVerticalOffset + SegmentLength * 0.5f;
+            float totalHeight = _definition.SegmentLength * segmentCount;
+            float topY = _definition.VerticalOffset + _definition.SegmentLength * 0.5f + _definition.InteractionColliderTopOffset;
             float bottomY = topY - totalHeight;
             float centerY = (topY + bottomY) * 0.5f;
 
             interactionObject.transform.localPosition = new Vector3(0f, centerY, 0f);
 
-            BoxCollider interactionCollider =
-                interactionObject.GetComponent<BoxCollider>();
+            BoxCollider interactionCollider = interactionObject.GetComponent<BoxCollider>();
 
             if (interactionCollider == null)
             {
@@ -203,10 +222,11 @@ namespace HexWaterproofBuilding.Components
 
             interactionCollider.center = Vector3.zero;
             interactionCollider.size = new Vector3(
-                InteractionColliderWidth,
+                _definition.InteractionColliderWidth,
                 totalHeight,
-                InteractionColliderWidth
+                _definition.InteractionColliderWidth
             );
+
             interactionCollider.isTrigger = false;
             interactionCollider.enabled = true;
         }
@@ -232,6 +252,23 @@ namespace HexWaterproofBuilding.Components
             }
 
             return hit.point.y < ZoneSystem.instance.m_waterLevel;
+        }
+
+        private static string GetPrefabName(GameObject prefab)
+        {
+            if (prefab == null)
+            {
+                return string.Empty;
+            }
+
+            string prefabName = prefab.name;
+
+            if (prefabName.EndsWith(CloneSuffix))
+            {
+                prefabName = prefabName.Substring(0, prefabName.Length - CloneSuffix.Length);
+            }
+
+            return prefabName;
         }
 
         private void OnDestroy()

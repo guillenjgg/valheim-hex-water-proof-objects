@@ -28,58 +28,112 @@ namespace HexWaterproofBuilding.Core
             }
 
             var indexes = PrefabDiscovery.GetHammerPieceIndexes();
-            int registeredCount = CreateWaterproofPieces(indexes);
-            int createPierPieces = CreatePierPieces();
+
+            int waterproofPieceCount = CreateWaterproofPieces(indexes);
+            int pierPieceCount = CreatePierPieces();
 
             _registered = true;
 
             PrefabManager.OnVanillaPrefabsAvailable -= RegisterPieces;
 
-            Jotunn.Logger.LogInfo($"Waterproof pieces registered. Count: {registeredCount}");
+            Jotunn.Logger.LogInfo($"Waterproof pieces registered. Count: {waterproofPieceCount}");
+            Jotunn.Logger.LogInfo($"Pier pieces registered. Count: {pierPieceCount}");
         }
 
         private static int CreatePierPieces()
         {
-            if (Plugin.Instance == null)
+            if (Plugin.Instance == null || Plugin.Instance.PierAssets == null)
             {
                 return 0;
-            }
-
-            GameObject log4 = Plugin.Instance.PierLog4Asset;
-
-            if (log4 == null)
-            {
-                return 0;
-            }
-
-            if (log4.GetComponent<Components.PierComponent>() == null)
-            {
-                log4.AddComponent<Components.PierComponent>();
             }
 
             PieceManager.Instance.AddPieceCategory(Constants.PierCategory);
 
-            var config = new PieceConfig
+            int registeredCount = 0;
+
+            foreach (var entry in Plugin.Instance.PierAssets.OrderBy(entry => entry.Key))
             {
-                Name = "$piece_hex_pier_log_4_vertical",
-                Description = "$piece_hex_pier_log_4_vertical_desc",
+                GameObject prefab = entry.Value;
+
+                if (prefab == null)
+                {
+                    continue;
+                }
+
+                Piece piece = prefab.GetComponent<Piece>();
+
+                if (piece == null)
+                {
+                    Jotunn.Logger.LogWarning($"{prefab.name} has no Piece component. Skipping.");
+                    continue;
+                }
+
+                WearNTear wear = prefab.GetComponent<WearNTear>();
+
+                if (wear == null)
+                {
+                    Jotunn.Logger.LogWarning($"{prefab.name} has no WearNTear component. Skipping.");
+                    continue;
+                }
+
+                PieceConfig config = BuildPierPieceConfig(prefab.name);
+
+                if (config == null)
+                {
+                    Jotunn.Logger.LogWarning($"No piece configuration found for pier prefab: {prefab.name}");
+                    continue;
+                }
+
+                if (prefab.GetComponent<Components.PierComponent>() == null)
+                {
+                    prefab.AddComponent<Components.PierComponent>();
+                }
+
+                var customPiece = new CustomPiece(prefab, true, config);
+
+                PieceManager.Instance.AddPiece(customPiece);
+
+                Jotunn.Logger.LogInfo($"Registered pier piece: {prefab.name}");
+                registeredCount++;
+            }
+
+            return registeredCount;
+        }
+
+        private static PieceConfig BuildPierPieceConfig(string prefabName)
+        {
+            RequirementConfig[] requirements;
+
+            switch (prefabName)
+            {
+                case "hex_pier_log_4_vertical":
+                    requirements = new[]
+                    {
+                        new RequirementConfig(ItemList.RoundLog, 2, 0, true),
+                        new RequirementConfig(ItemList.Resin, 1, 0, true)
+                    };
+                        break;
+
+                case "hex_pier_stone_pillar":
+                    requirements = new[]
+                    {
+                        new RequirementConfig("Stone", 2, 0, true)
+                    };
+                    break;
+
+                default:
+                    return null;
+            }
+
+            return new PieceConfig
+            {
+                Name = $"$piece_{prefabName}",
+                Description = $"$piece_{prefabName}_desc",
                 PieceTable = PieceTables.Hammer,
                 CraftingStation = null,
                 Category = Constants.PierCategory,
-                Requirements = new[]
-                {
-                    new RequirementConfig(ItemList.RoundLog, 2, 0, true),
-                    new RequirementConfig(ItemList.Resin, 1, 0, true)
-                }
+                Requirements = requirements
             };
-
-            var customPiece = new CustomPiece(log4, true, config);
-
-            PieceManager.Instance.AddPiece(customPiece);
-
-            Jotunn.Logger.LogInfo($"Registered pier piece: {log4.name}");
-
-            return 1;
         }
 
         private static int CreateWaterproofPieces(Dictionary<string, int> hammerIndexes)
@@ -180,9 +234,9 @@ namespace HexWaterproofBuilding.Core
                 PieceTable = PieceTables.Hammer,
                 Category = Constants.WaterproofCategory,
                 Requirements = BuildRequirementConfigs(vanillaPiece, new Dictionary<string, int>
-                {
-                    { ItemList.Resin, 1 }
-                })
+            {
+                { ItemList.Resin, 1 }
+            })
             };
         }
 
@@ -213,7 +267,7 @@ namespace HexWaterproofBuilding.Core
                 foreach (var customRequirement in customRequirements)
                 {
                     bool alreadyExists = requirements.Any(requirement =>
-                        string.Equals(requirement.Item, customRequirement.Key, System.StringComparison.OrdinalIgnoreCase));
+                        string.Equals(requirement.Item, customRequirement.Key, StringComparison.OrdinalIgnoreCase));
 
                     if (alreadyExists)
                     {

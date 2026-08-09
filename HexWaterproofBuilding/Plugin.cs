@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
+using HexWaterproofBuilding.Core;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using Jotunn.Utils;
@@ -31,12 +32,12 @@ namespace HexWaterproofBuilding
         internal bool IsExtendedPlacementForVanillaPiecesEnabled => _extendedPlacementForVanillaPiecesEnabled != null && _extendedPlacementForVanillaPiecesEnabled.Value;
         internal bool IsWorkBenchRequireRoof => _workBenchRequireRoof != null && _workBenchRequireRoof.Value;
         internal AssetBundle AssetBundle { get; private set; }
-        internal GameObject PierLog4Asset { get; private set; }
+        internal Dictionary<string, GameObject> PierAssets { get; } = new Dictionary<string, GameObject>();
 
         private void Awake()
         {
             Instance = this;
-            
+
             LoadAssets();
             AddLocalizations();
 
@@ -48,7 +49,7 @@ namespace HexWaterproofBuilding
                 false,
                 "Enable extended placement range for vanilla building pieces."
             );
-            
+
             _workBenchRequireRoof = Config.Bind("General", "WorkBenchRequireRoof", false, "Require a roof for workbenches to function.");
 
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -79,14 +80,25 @@ namespace HexWaterproofBuilding
         {
             AssetBundle = AssetUtils.LoadAssetBundleFromResources("piersupport", Assembly.GetExecutingAssembly());
 
-            if(AssetBundle == null)
+            if (AssetBundle == null)
             {
                 return false;
             }
 
-            PierLog4Asset = AssetBundle.LoadAsset<GameObject>("hex_pier_log_4_vertical");
+            GameObject[] prefabs = AssetBundle.LoadAllAssets<GameObject>();
 
-            return PierLog4Asset != null;
+            foreach (GameObject prefab in prefabs)
+            {
+                if (prefab == null || !prefab.name.StartsWith(Constants.PierPrefabPrefix, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                PierAssets[prefab.name] = prefab;
+                Jotunn.Logger.LogInfo($"Discovered pier prefab: {prefab.name}");
+            }
+
+            return PierAssets.Count > 0;
         }
 
         private void AddLocalizations()
@@ -94,10 +106,12 @@ namespace HexWaterproofBuilding
             _localization = LocalizationManager.Instance.GetLocalization();
 
             _localization.AddTranslation("English", new Dictionary<string, string>
-            {
-                {"piece_hex_pier_log_4_vertical", "4m Vertical Pier Support" },
-                {"piece_hex_pier_log_4_vertical_desc", "A pier support that extends to the seabed. Cannot be placed on dry land." },
-            });
+        {
+            { "piece_hex_pier_log_4_vertical", "4m Vertical Pier Support" },
+            { "piece_hex_pier_log_4_vertical_desc", "A pier support that extends to the seabed. Cannot be placed on dry land." },
+            { "piece_hex_pier_stone_pillar", "Stone Pier Support" },
+            { "piece_hex_pier_stone_pillar_desc", "A stone pier support that extends to the seabed. Cannot be placed on dry land." }
+        });
         }
     }
 }
