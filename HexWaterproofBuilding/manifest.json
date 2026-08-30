@@ -1,6 +1,6 @@
 {
   "name": "HexWaterproofBuilding",
-  "version_number": "1.4.0",
+  "version_number": "1.5.0",
   "website_url": "https://discord.gg/wU2FXD94v4",
   "description": "Adds rain-resistant versions of the vanilla workbench and building pieces. Includes a vertical pier support that extends to the seabed, optional extended-range placement for vanilla and waterproof pieces, and removes the workbench roof requirement.",
   "dependencies": [
