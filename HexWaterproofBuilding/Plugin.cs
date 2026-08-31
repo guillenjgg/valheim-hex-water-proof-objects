@@ -51,8 +51,8 @@ namespace HexWaterproofBuilding
                 "Enable extended placement range for vanilla building pieces."
             );
             
-            _workBenchRequireRoof = Config.Bind("General", "WorkBenchRequireRoof", false, "Require a roof for workbenches to function.");
-            _woodAndBoneStacksTakeRainDamage = Config.Bind("General", "WoodAndBoneStacksTakeRainDamage", false, "Wood and bone stacks will take rain damage if this value is set to true.");
+            _workBenchRequireRoof = Config.Bind("Workbenches", "WorkBenchRequireRoof", false, "Require a roof for workbenches to function.");
+            _woodAndBoneStacksTakeRainDamage = Config.Bind("Wood Stacks", "WoodAndBoneStacksTakeRainDamage", false, "Wood and bone stacks will take rain damage if this value is set to true.");
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             _harmony = new Harmony(PluginGuid);

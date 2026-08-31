@@ -4,8 +4,8 @@
 
 ### Added
 * Wood and bone stacks no longer take rain damage.
-* Added a configuration option to enable or disable rain damage for wood and bone stacks.
-* Wired up the existing configuration option for requiring a roof over workbenches.
+* A configuration option to enable or disable rain damage for wood and bone stacks.
+* Enabled the existing configuration option for controlling whether workbenches require a roof.
 
 
 ## v1.4.0
