@@ -16,13 +16,14 @@ namespace HexWaterproofBuilding
     {
         private const string PluginGuid = "hex.waterproofbuilding";
         private const string PluginName = "HexWaterproofBuilding";
-        private const string PluginVersion = "1.4.0";
+        private const string PluginVersion = "1.5.0";
 
         private Harmony _harmony;
         private ConfigEntry<bool> _modEnabled;
         private ConfigEntry<bool> _extendedPlacementRangeEnabled;
         private ConfigEntry<bool> _extendedPlacementForVanillaPiecesEnabled;
         private ConfigEntry<bool> _workBenchRequireRoof;
+        private ConfigEntry<bool> _woodAndBoneStacksTakeRainDamage;
         private CustomLocalization _localization;
 
         internal static Plugin Instance { get; private set; }
@@ -30,6 +31,7 @@ namespace HexWaterproofBuilding
         internal bool IsExtendedPlacementRangeEnabled => _extendedPlacementRangeEnabled != null && _extendedPlacementRangeEnabled.Value;
         internal bool IsExtendedPlacementForVanillaPiecesEnabled => _extendedPlacementForVanillaPiecesEnabled != null && _extendedPlacementForVanillaPiecesEnabled.Value;
         internal bool IsWorkBenchRequireRoof => _workBenchRequireRoof != null && _workBenchRequireRoof.Value;
+        internal bool IsWoodAndBoneStacksTakeRainDamage => _woodAndBoneStacksTakeRainDamage != null && _woodAndBoneStacksTakeRainDamage.Value;
         internal AssetBundle AssetBundle { get; private set; }
         internal GameObject PierLog4Asset { get; private set; }
 
@@ -49,7 +51,8 @@ namespace HexWaterproofBuilding
                 "Enable extended placement range for vanilla building pieces."
             );
             
-            _workBenchRequireRoof = Config.Bind("General", "WorkBenchRequireRoof", false, "Require a roof for workbenches to function.");
+            _workBenchRequireRoof = Config.Bind("Workbenches", "WorkBenchRequireRoof", false, "Require a roof for workbenches to function.");
+            _woodAndBoneStacksTakeRainDamage = Config.Bind("Wood Stacks", "WoodAndBoneStacksTakeRainDamage", false, "Wood and bone stacks will take rain damage if this value is set to true.");
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             _harmony = new Harmony(PluginGuid);
