@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.1
+
+### Added
+- Valheim 1.0 update
+
 ## v1.5.0
 
 ### Added
