@@ -164,11 +164,12 @@ namespace HexWaterproofBuilding.Core
 
             if (wear == null)
             {
-                Jotunn.Logger.LogWarning($"{customPrefab.name} has no WearNTear component.");
                 return;
             }
 
             wear.m_noRoofWear = false;
+            wear.m_worn = wear.m_new;
+            wear.m_broken = wear.m_new;
         }
 
         private static PieceConfig BuildPieceConfig(string customPrefabName, Piece vanillaPiece)

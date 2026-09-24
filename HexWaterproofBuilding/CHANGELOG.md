@@ -2,8 +2,11 @@
 
 ## v1.5.1
 
-### Added
-- Valheim 1.0 update
+### Changed
+- Compiled against Valheim 1.0.14
+
+### Fixed
+- Waterproof building pieces no longer display worn or broken visual states.
 
 ## v1.5.0
 

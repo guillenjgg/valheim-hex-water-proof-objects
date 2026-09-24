@@ -19,7 +19,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Dev\BepInEx\plugins\HexWaterproofBuilding\</OutputPath>
+    <OutputPath>..\..\..\debug_builds\HexWaterproofBuilding\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,14 +37,12 @@
       <HintPath>..\..\..\bepinex_mod_libs\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="assembly_utils_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\publicized_assemblies\1.0-release\assembly_utils_publicized.dll</HintPath>
+    <Reference Include="assembly_utils_publicized">
+      <HintPath>..\..\..\publicized_assemblies\v1.0.14\assembly_utils_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="assembly_valheim_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\publicized_assemblies\1.0-release\assembly_valheim_publicized.dll</HintPath>
+    <Reference Include="assembly_valheim_publicized">
+      <HintPath>..\..\..\publicized_assemblies\v1.0.14\assembly_valheim_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
@@ -52,7 +50,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Jotunn">
-      <HintPath>..\..\..\Jotunn-2.30.0\plugins\Jotunn.dll</HintPath>
+      <HintPath>..\..\..\bepinex_mod_libs\Jotunn.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
